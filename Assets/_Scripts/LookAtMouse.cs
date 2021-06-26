@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class LookAtMouse : MonoBehaviour
 {
-   
-    void Update()
-    {
-        faceMouse();
-    }
-    void faceMouse()
-    {
-       
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = new Vector2(mousePos.x - transform.position.x,
-            mousePos.y - transform.position.y);
 
-        transform.up = direction;
+    private void Update()
+    {
+        var dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 }
