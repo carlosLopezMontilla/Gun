@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    float v;
-    float h;
+    float v,h;
+    
     public Rigidbody2D rb;
-    public GameObject[] sides;
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
