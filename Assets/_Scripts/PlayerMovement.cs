@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private const string AXIS_H = "Horizontal", AXIS_V = "Vertical", WALK = "Walking", LAST_H = "LastH", LAST_V = "LastV";
     private Animator anim;
     private Rigidbody2D rb;
+    public Transform gunPivot;
+    public Vector3 direction;
+    public float h, v;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +36,16 @@ public class PlayerMovement : MonoBehaviour
             walking = true;
             lastMovement = new Vector2(0, Input.GetAxisRaw(AXIS_V));
         }
+        h = Input.GetAxisRaw(AXIS_H);
+        v = Input.GetAxisRaw(AXIS_V);
+        direction = new Vector2(h, v);
+        GunController();
+        
     }
 
     private void LateUpdate()
     {
-        if (!walking)
+        if (!walking) 
         {
             rb.velocity = Vector2.zero;
         }
@@ -48,51 +56,18 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat(LAST_V, lastMovement.y);
 
     }
+    void GunController()
+    {
+        if(Input.GetKey(KeyCode.Space))
+        {
+            rb.velocity = Vector3.zero;
+            gunPivot.position = direction.normalized + transform.position;
+
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            print("s");
+        }
+    }
 }
 
-/*{
-    float v,h;
-    public string hDirec = "Horizontal", vDirec = "Vertical";
-    public Rigidbody2D rb;
-    public Animator _anim;
-    public bool isWalking;
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        isWalking = false;
-    }
-
-    void Update()
-    {
-        isWalking = false;
-
-        if (Mathf.Abs(Input.GetAxisRaw(hDirec)) > 0.2)
-        {
-            h = Input.GetAxisRaw(hDirec);
-            isWalking = true;
-        }
-        if (Mathf.Abs(Input.GetAxisRaw(vDirec)) > 0.2)
-        {
-            v = Input.GetAxisRaw(vDirec);
-            isWalking = true;
-        }
-      
-
-    }
-
-    private void FixedUpdate()
-    {
-        rb.velocity = new Vector3(h, v);
-        if (isWalking == false)
-        {
-            rb.velocity = Vector2.zero;
-        }
-    }
-
-    private void LateUpdate()
-    {
-        _anim.SetFloat("Horizontal", h);
-        _anim.SetFloat("Vertical", v);
-        _anim.SetBool("Walking", isWalking);
-    }
-}*/
