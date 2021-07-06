@@ -11,9 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     public Transform gunPivot;
     public Vector3 direction;
+    public GameObject bulletPrefabs;
+    public Transform spawnpoint;
+    public float bulletForce;
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -38,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxisRaw(AXIS_H);
         float v = Input.GetAxisRaw(AXIS_V);
         direction = new Vector3(h, v);
-
         Shooting();
     }
 
@@ -58,10 +60,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Shooting()
     {
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = Vector3.zero;
             gunPivot.position = direction.normalized + transform.position;
+            GameObject bullet = Instantiate(bulletPrefabs, spawnpoint.position, spawnpoint.rotation);
+            Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+            bulletRB.AddForce(direction, ForceMode.Impulse);
+            
         }
     }
 }
