@@ -41,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxisRaw(AXIS_H);
         float v = Input.GetAxisRaw(AXIS_V);
         direction = new Vector3(h, v);
-        Shooting();
     }
 
     private void LateUpdate()
@@ -56,19 +55,6 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat(LAST_H, lastMovement.x);
         anim.SetFloat(LAST_V, lastMovement.y);
 
-    }
-
-    void Shooting()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.velocity = Vector3.zero;
-            gunPivot.position = direction.normalized + transform.position;
-            GameObject bullet = Instantiate(bulletPrefabs, spawnpoint.position, spawnpoint.rotation);
-            Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
-            bulletRB.AddForce(direction, ForceMode.Impulse);
-            
-        }
     }
 }
 
